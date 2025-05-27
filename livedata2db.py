@@ -102,7 +102,7 @@ battery_data = get_data(battery_url)
 data['battery_controller_timestamp'] = battery_data['Head']['Timestamp']
 
 try:
-	if battery_data is not None and battery_data['Body']['Data']['0']['Controller']['Enable'] == 1:
+	if battery_data is not None and len(battery_data['Body']['Data']) > 0 and battery_data['Body']['Data']['0']['Controller']['Enable'] == 1:
 		data['battery_controller_timestamp2'] = battery_data['Body']['Data']['0']['Controller']['TimeStamp']
 		data['battery_controller_StateOfCharge_Relative'] = battery_data['Body']['Data']['0']['Controller']['StateOfCharge_Relative']
 		data['battery_controller_Voltage_DC'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC']
@@ -120,7 +120,7 @@ try:
 		data['battery_controller_Voltage_DC_Minimum_Cell'] = 0.0
 except KeyError as ke:
 	print("Key Error during battery_data read: {0}".format(ke)) 
-	print ("My Keys for the battery_data are: {0}".format(battery_data.keys()))
+	print ("My Keys for the battery_data are: {0}".format(battery_data['Body']['Data'].keys()))
 
 print(time.time()-starttime)
 
