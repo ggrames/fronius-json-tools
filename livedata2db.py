@@ -8,8 +8,13 @@ import time
 import collections
 import sqlite3 as lite
 import requests
+import argparse
 
-hostname = "fronius"
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname', 
+                    help='Fronius Wechselrichter hostname or ip', default="fronius")
+args = parser.parse_args()
+hostname = (args.hostname)
 
 data = collections.OrderedDict()
 current_time_string = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())

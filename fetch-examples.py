@@ -9,8 +9,14 @@ import sys
 import os
 import json
 import re
+import argparse
 
-hostname = "fronius"
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname', 
+                    help='Fronius Wechselrichter hostname or ip', default="fronius")
+args = parser.parse_args()
+hostname = (args.hostname)
+
 version = "1.23.2-1"
 
 def get_example(endpoint):

@@ -15,8 +15,13 @@ import os
 import json
 import time
 from datetime import timedelta, date, datetime
+import argparse
 
-hostname = "fronius"
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname', 
+                    help='Fronius Wechselrichter hostname or ip', default="fronius")
+args = parser.parse_args()
+hostname = (args.hostname)
 
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days + 1)):
