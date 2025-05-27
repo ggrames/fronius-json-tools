@@ -101,22 +101,26 @@ battery_data = get_data(battery_url)
 
 data['battery_controller_timestamp'] = battery_data['Head']['Timestamp']
 
-if battery_data['Body']['Data']['0']['Controller']['Enable'] == 1:
-	data['battery_controller_timestamp2'] = battery_data['Body']['Data']['0']['Controller']['TimeStamp']
-	data['battery_controller_StateOfCharge_Relative'] = battery_data['Body']['Data']['0']['Controller']['StateOfCharge_Relative']
-	data['battery_controller_Voltage_DC'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC']
-	data['battery_controller_Current_DC'] = battery_data['Body']['Data']['0']['Controller']['Current_DC']
-	data['battery_controller_Temperature_Cell'] = battery_data['Body']['Data']['0']['Controller']['Temperature_Cell']
-	data['battery_controller_Voltage_DC_Maximum_Cell'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC_Maximum_Cell']
-	data['battery_controller_Voltage_DC_Minimum_Cell'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC_Minimum_Cell']
-else:
-	data['battery_controller_timestamp2'] = 0
-	data['battery_controller_StateOfCharge_Relative'] = 0
-	data['battery_controller_Voltage_DC'] = 0.0
-	data['battery_controller_Current_DC'] = 0.0
-	data['battery_controller_Temperature_Cell'] = 0.0
-	data['battery_controller_Voltage_DC_Maximum_Cell'] = 0.0
-	data['battery_controller_Voltage_DC_Minimum_Cell'] = 0.0
+try:
+	if battery_data is not None and battery_data['Body']['Data']['0']['Controller']['Enable'] == 1:
+		data['battery_controller_timestamp2'] = battery_data['Body']['Data']['0']['Controller']['TimeStamp']
+		data['battery_controller_StateOfCharge_Relative'] = battery_data['Body']['Data']['0']['Controller']['StateOfCharge_Relative']
+		data['battery_controller_Voltage_DC'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC']
+		data['battery_controller_Current_DC'] = battery_data['Body']['Data']['0']['Controller']['Current_DC']
+		data['battery_controller_Temperature_Cell'] = battery_data['Body']['Data']['0']['Controller']['Temperature_Cell']
+		data['battery_controller_Voltage_DC_Maximum_Cell'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC_Maximum_Cell']
+		data['battery_controller_Voltage_DC_Minimum_Cell'] = battery_data['Body']['Data']['0']['Controller']['Voltage_DC_Minimum_Cell']
+	else:
+		data['battery_controller_timestamp2'] = 0
+		data['battery_controller_StateOfCharge_Relative'] = 0
+		data['battery_controller_Voltage_DC'] = 0.0
+		data['battery_controller_Current_DC'] = 0.0
+		data['battery_controller_Temperature_Cell'] = 0.0
+		data['battery_controller_Voltage_DC_Maximum_Cell'] = 0.0
+		data['battery_controller_Voltage_DC_Minimum_Cell'] = 0.0
+except KeyError as ke:
+	print("Key Error during battery_data read: {0}".format(ke)) 
+	print ("My Keys for the battery_date are: {0}").format(battery_data.keys())
 
 print(time.time()-starttime)
 
