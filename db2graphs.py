@@ -20,9 +20,12 @@ parser.add_argument('start_date',
                     help='StartDate for json file generation: %Y-%m-%d', nargs='?', const=yesterday, default=yesterday)
 parser.add_argument('end_date',
                     help='EndDate for json file generation: %Y-%m-%d',  nargs='?', const=tomorrow, default=tomorrow)
+parser.add_argument('imageoutput',
+                    help='Imageoutput path and filename',  nargs='?', const="/tmp/plot.jpg", default="/tmp/plot.jpg")
 args = parser.parse_args()
 start_date = datetime.strptime(args.start_date, "%Y-%m-%d")
 end_date = datetime.strptime(args.end_date, "%Y-%m-%d")
+imageout = args.imageoutput
 
 con = lite.connect('fronius.db')
 
@@ -32,4 +35,4 @@ with con:
 #print (data)
 plt.plot(data.meter_timestamp, data.powerflow_P_PV, linewidth=2.0)
 plt.title("Powerflow between {0} and {1}".format(str(start_date), str(end_date)))
-plt.savefig("plot.jpg")
+plt.savefig(imageout)
