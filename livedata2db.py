@@ -120,7 +120,7 @@ try:
 		data['battery_controller_Voltage_DC_Minimum_Cell'] = 0.0
 except KeyError as ke:
 	print("Key Error during battery_data read: {0}".format(ke)) 
-	print ("My Keys for the battery_date are: {0}").format(battery_data.keys())
+	print ("My Keys for the battery_data are: {0}".format(battery_data.keys()))
 
 print(time.time()-starttime)
 
