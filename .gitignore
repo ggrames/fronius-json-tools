@@ -94,6 +94,15 @@ fronius.db
 
 # akleber specific
 drosselweg*/
+# akleber specific
+drosselweg*/
+
+# ggrames specific
+bin/
+lib64
+plot.png
+pyvenv.cfg
+share/
 fronius-json-tools.sublime-workspace
 .vscode/launch.json
 plot.jpg
