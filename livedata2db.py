@@ -135,7 +135,11 @@ with con:
     cur = con.cursor()    
     
     #cur.execute("DROP TABLE IF EXISTS fronius")
-    #cur.execute("CREATE TABLE fronius(" + ', '.join(data.keys()) + ")")
+    try:
+        cur.execute("CREATE TABLE fronius(" + ', '.join(data.keys()) + ")")
+    except Exception:
+        pass
+
     cur.execute("INSERT INTO fronius VALUES (" + ('?,' * len(data.values()))[:-1] + ")", list(data.values()))
 
 

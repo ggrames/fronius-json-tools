@@ -1,4 +1,3 @@
-
 """
 Work-in-progress!!!
 
@@ -8,21 +7,29 @@ and generats a graph.
 
 import matplotlib.pyplot as plt
 import sqlite3 as lite
+import argparse
+import pandas
+from datetime import timedelta, date, datetime
 
-con = lite.connect('examples/fronius.db')
+parser = argparse.ArgumentParser()
+
+tomorrow = (datetime.today()+timedelta(days=1)).strftime('%Y-%m-%d')
+yesterday = (datetime.today()-timedelta(days=1)).strftime('%Y-%m-%d')
+
+parser.add_argument('start_date',
+                    help='StartDate for json file generation: %Y-%m-%d', nargs='?', const=yesterday, default=yesterday)
+parser.add_argument('end_date',
+                    help='EndDate for json file generation: %Y-%m-%d',  nargs='?', const=tomorrow, default=tomorrow)
+args = parser.parse_args()
+start_date = datetime.strptime(args.start_date, "%Y-%m-%d")
+end_date = datetime.strptime(args.end_date, "%Y-%m-%d")
+
+con = lite.connect('fronius.db')
 
 with con:
-    cur = con.cursor()    
-    
-    cur.execute("SELECT 'timestamp', 'powerflow_P_PV' FROM fronius WHERE 'timestamp' BETWEEN '2016-09-07' AND '2016-09-08'")
-    rows = cur.fetchall() 
-
-x = [ row[0] for row in rows ]
-y = [ row[1] for row in rows ]
-
-#print(data)
-#print(x)
-
-plt.plot(x, y)
-#plt.show()
-plt.savefig('examples/plot.png', bbox_inches='tight')
+    sql = "SELECT meter_timestamp, powerflow_P_PV FROM fronius WHERE date(meter_timestamp) BETWEEN '"+str(start_date)+"' AND '"+str(end_date)+"'"
+    data = pandas.read_sql(sql, con)
+#print (data)
+plt.plot(data.meter_timestamp, data.powerflow_P_PV, linewidth=2.0)
+plt.title("Powerflow between {0} and {1}".format(str(start_date), str(end_date)))
+plt.savefig("plot.jpg")
